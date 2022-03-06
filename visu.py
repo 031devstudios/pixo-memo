@@ -8,13 +8,24 @@ If Python and Arcade are installed, this example can be run from the command lin
 python -m arcade.examples.starting_template
 """
 import arcade
+from random import randint
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 SCREEN_TITLE = "Pixo-Memo"
-
 SPRITE_SCALING_RED = 0.5
 
+# Variables used in the game
+
+answer = []
+sequence = []
+number_of_colours = 4
+colours = {
+  1 : "red",
+  2 : "green",
+  3 : "blue",
+  4 : "yellow"
+}
 
 class MyGame(arcade.Window):
     """
@@ -65,15 +76,13 @@ class MyGame(arcade.Window):
         # Create your sprites and sprite lists here
 
         self.red_list = arcade.SpriteList()
-
+        
         img = "D:/Programming/Pixo-Memo/images/red.png"
         self.red_sprite = arcade.Sprite(img, SPRITE_SCALING_RED)
-        self.red_sprite.center_x = 50
-        self.red_sprite.center_y = 50
         self.red_sprite.center_x = 300
         self.red_sprite.center_y = 400
         self.red_list.append(self.red_sprite)
-          
+        
 
                 
     def on_draw(self):
@@ -87,11 +96,8 @@ class MyGame(arcade.Window):
         
         # Call draw() on all your sprite lists below
 
-        self.red_list.draw()
-
-        # Draws 2 squares per colour and sets coordinates
-
         arcade.draw_rectangle_filled(self.red_x, self.red_y, 100, 100, arcade.color.RED, 90)
+        self.red_list.draw()
         arcade.draw_rectangle_filled(self.deep_red_x, self.deep_red_y, 100, 100, arcade.color.BURGUNDY, 90)    
 
         arcade.draw_rectangle_filled(self.green_x, self.green_y, 100, 100, arcade.color.GREEN, 90)
@@ -103,6 +109,8 @@ class MyGame(arcade.Window):
         arcade.draw_rectangle_filled(self.blue_x, self.blue_y, 100, 100, arcade.color.BLUE, 90)
         arcade.draw_rectangle_filled(self.deep_blue_x, self.deep_blue_y, 100, 100, arcade.color.DARK_MIDNIGHT_BLUE, 90)  
 
+        
+
 
 
         # arcade.finish_render()
@@ -113,6 +121,10 @@ class MyGame(arcade.Window):
         Normally, you'll call update() on the sprite lists that
         need it.
         """
+        if sequence == answer:
+            print("YAY!")
+            exit()
+        
 
 
     def on_key_press(self, key, key_modifiers):
@@ -143,25 +155,33 @@ class MyGame(arcade.Window):
         # Check the mouse coordinates when LEFt button is clicked,
         # if it is within a certain area move the second square on top.
         # This gives the illusion that the button is being clicked.
+        
+
         if button == arcade.MOUSE_BUTTON_LEFT:
             if x >= 250 and x <= 350 and y >= 350 and y <= 450:
                 self.deep_red_x = self.red_x
                 self.deep_red_y = self.red_y
+                sequence.append("red")
                 print("Red")
             elif x >= 450 and x <= 550 and y >= 350 and y <= 450:
                 self.deep_green_x = self.green_x
                 self.deep_green_y = self.green_y
+                sequence.append("green")
                 print("Green")
             elif x >= 450 and x <= 550 and y >= 150 and y <= 250:
                 self.deep_blue_x = self.blue_x
                 self.deep_blue_y = self.blue_y
+                sequence.append("blue")
                 print("Blue")
             elif x >= 250 and x <= 350 and y >= 150 and y <= 250:
                 self.deep_yellow_x = self.yellow_x
                 self.deep_yellow_y = self.yellow_y
+                sequence.append("yellow")
                 print("Yellow")
         elif button == arcade.MOUSE_BUTTON_RIGHT:
             print("Right mouse button pressed at", x, y)
+            print(sequence)
+            print(answer)
 
 
     def on_mouse_release(self, x, y, button, key_modifiers):
@@ -183,11 +203,19 @@ class MyGame(arcade.Window):
         self.deep_yellow_x = -100
         self.deep_yellow_y = -100
 
+    def game(self):
+        for i in range(number_of_colours):
+            x = randint(1,4)
+            colour = colours[x]
+            answer.append(colour)
+
+
 
 def main():
     """ Main function """
     game = MyGame(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
     game.setup()
+    game.game()
     arcade.run()
     
 
