@@ -13,6 +13,8 @@ SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 SCREEN_TITLE = "Pixo-Memo"
 
+SPRITE_SCALING_RED = 0.5
+
 
 class MyGame(arcade.Window):
     """
@@ -25,6 +27,12 @@ class MyGame(arcade.Window):
 
     def __init__(self, width, height, title):
         super().__init__(width, height, title)
+
+        # If you have sprite lists, you should create them here,
+        # and set them to None
+
+        self.red_list = None
+        self.red_sprite = None
 
         # Sets coordinates for coloured squares. One on-screen, and one off-screen.
         self.red_x = 300
@@ -49,14 +57,23 @@ class MyGame(arcade.Window):
 
         arcade.set_background_color(arcade.color.BLACK)
 
-        # If you have sprite lists, you should create them here,
-        # and set them to None
+        
 
 
     def setup(self):
         """ Set up the game variables. Call to re-start the game. """
         # Create your sprites and sprite lists here
-  
+
+        self.red_list = arcade.SpriteList()
+
+        img = "D:/Programming/Pixo-Memo/images/red.png"
+        self.red_sprite = arcade.Sprite(img, SPRITE_SCALING_RED)
+        self.red_sprite.center_x = 50
+        self.red_sprite.center_y = 50
+        self.red_sprite.center_x = 300
+        self.red_sprite.center_y = 400
+        self.red_list.append(self.red_sprite)
+          
 
                 
     def on_draw(self):
@@ -69,6 +86,8 @@ class MyGame(arcade.Window):
         self.clear()
         
         # Call draw() on all your sprite lists below
+
+        self.red_list.draw()
 
         # Draws 2 squares per colour and sets coordinates
 
